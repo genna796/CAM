@@ -75,9 +75,11 @@ module camsrfexch
      real(r8) :: dstdry3(pcols)      ! dry deposition of dust (bin3)
      real(r8) :: dstwet4(pcols)      ! wet deposition of dust (bin4)
      real(r8) :: dstdry4(pcols)      ! dry deposition of dust (bin4)
+     real(r8) :: cloudfrac(pcols)    ! cloud fraction
      real(r8), pointer, dimension(:) :: nhx_nitrogen_flx ! nitrogen deposition fluxes (kgN/m2/s)
      real(r8), pointer, dimension(:) :: noy_nitrogen_flx ! nitrogen deposition fluxes (kgN/m2/s)
-  end type cam_out_t 
+      
+end type cam_out_t 
 
   !---------------------------------------------------------------------------
   ! This is the merged state of sea-ice, land and ocean surface parameterizations
@@ -315,6 +317,7 @@ CONTAINS
        cam_out(c)%dstwet3(:)  = 0._r8
        cam_out(c)%dstdry4(:)  = 0._r8
        cam_out(c)%dstwet4(:)  = 0._r8
+       cam_out(c)%cloudfrac(:) = 0._r8
 
        nullify(cam_out(c)%nhx_nitrogen_flx)
        nullify(cam_out(c)%noy_nitrogen_flx)
@@ -329,6 +332,7 @@ CONTAINS
           if ( ierror /= 0 ) call endrun(sub//': allocation error noy_nitrogen_flx')
           cam_out(c)%noy_nitrogen_flx(:) = 0._r8
        endif
+   
     end do
 
   end subroutine atm2hub_alloc

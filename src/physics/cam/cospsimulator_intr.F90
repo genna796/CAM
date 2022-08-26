@@ -1186,10 +1186,10 @@ CONTAINS
   ! ######################################################################################
   ! SUBROUTINE cospsimulator_intr_run
   ! ######################################################################################
-  subroutine cospsimulator_intr_run(state,pbuf, cam_in,emis,coszrs,cld_swtau_in,snow_tau_in,snow_emis_in)    
+  subroutine cospsimulator_intr_run(state,pbuf, cam_in, cam_out, emis,coszrs,cld_swtau_in,snow_tau_in,snow_emis_in)    
     use physics_types,        only: physics_state
     use physics_buffer,       only: physics_buffer_desc, pbuf_get_field, pbuf_old_tim_idx
-    use camsrfexch,           only: cam_in_t
+    use camsrfexch,           only: cam_in_t, cam_out_t
     use constituents,         only: cnst_get_ind
     use rad_constituents,     only: rad_cnst_get_gas
     use wv_saturation,        only: qsat_water
@@ -1210,6 +1210,7 @@ CONTAINS
     type(physics_state), intent(in),target  :: state
     type(physics_buffer_desc),      pointer :: pbuf(:)
     type(cam_in_t),      intent(in)         :: cam_in
+    type(cam_out_t),     intent(inout)         :: cam_out
     real(r8), intent(in) :: emis(pcols,pver)                  ! cloud longwave emissivity
     real(r8), intent(in) :: coszrs(pcols)                     ! cosine solar zenith angle (to tell if day or night)
     real(r8), intent(in),optional :: cld_swtau_in(pcols,pver) ! RRTM cld_swtau_in, read in using this variable
@@ -2776,6 +2777,11 @@ CONTAINS
           call outfld('DBZE_CS',dbze_cs,pcols,lchnk) !! fails check_accum if 'A'
        end if
     end if
+    where (cltmodis(1:ncol) .ge. 0)
+      cam_out%cloudfrac(1:ncol)=cltmodis(1:ncol)
+    elsewhere 
+      cam_out%cloudfrac(1:ncol)=100._r8
+    endwhere
     call t_stopf("writing_output")
 #endif
   end subroutine cospsimulator_intr_run

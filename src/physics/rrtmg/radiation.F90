@@ -1312,7 +1312,7 @@ subroutine radiation_tend( &
 
             ! N.B.: For snow optical properties, the GRID-BOX MEAN shortwave and longwave
             !       optical depths are passed.
-            call cospsimulator_intr_run(state,  pbuf, cam_in, emis, coszrs, &
+            call cospsimulator_intr_run(state,  pbuf, cam_in, cam_out, emis, coszrs, &
                cld_swtau_in=cld_tau(rrtmg_sw_cloudsim_band,:,:),&
                snow_tau_in=gb_snow_tau, snow_emis_in=gb_snow_lw)
             cosp_cnt(lchnk) = 0
