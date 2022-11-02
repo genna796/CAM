@@ -1210,7 +1210,7 @@ CONTAINS
     type(physics_state), intent(in),target  :: state
     type(physics_buffer_desc),      pointer :: pbuf(:)
     type(cam_in_t),      intent(in)         :: cam_in
-    type(cam_out_t),     intent(inout)         :: cam_out
+    type(cam_out_t),     intent(inout)      :: cam_out
     real(r8), intent(in) :: emis(pcols,pver)                  ! cloud longwave emissivity
     real(r8), intent(in) :: coszrs(pcols)                     ! cosine solar zenith angle (to tell if day or night)
     real(r8), intent(in),optional :: cld_swtau_in(pcols,pver) ! RRTM cld_swtau_in, read in using this variable
@@ -2777,11 +2777,20 @@ CONTAINS
           call outfld('DBZE_CS',dbze_cs,pcols,lchnk) !! fails check_accum if 'A'
        end if
     end if
+    ! add modis cloud frac to cam_out
     where (cltmodis(1:ncol) .ge. 0)
-      cam_out%cloudfrac(1:ncol)=cltmodis(1:ncol)
+      cam_out%cloudfrac_modis(1:ncol)=cltmodis(1:ncol)
     elsewhere 
-      cam_out%cloudfrac(1:ncol)=100._r8
+      cam_out%cloudfrac_modis(1:ncol)=100._r8
     endwhere
+    ! add isccp cloud frac to cam_out
+    where (cldtot_isccp(1:ncol) .ge. 0)
+      cam_out%cloudfrac_isccp(1:ncol)=cldtot_isccp(1:ncol)
+    elsewhere 
+      cam_out%cloudfrac_isccp(1:ncol)=100._r8
+    endwhere
+    ! add solar zenith angle to cam_out
+    cam_out%coszen(1:ncol)= coszrs(1:ncol)
     call t_stopf("writing_output")
 #endif
   end subroutine cospsimulator_intr_run

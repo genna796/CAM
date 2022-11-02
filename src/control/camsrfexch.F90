@@ -75,7 +75,9 @@ module camsrfexch
      real(r8) :: dstdry3(pcols)      ! dry deposition of dust (bin3)
      real(r8) :: dstwet4(pcols)      ! wet deposition of dust (bin4)
      real(r8) :: dstdry4(pcols)      ! dry deposition of dust (bin4)
-     real(r8) :: cloudfrac(pcols)    ! cloud fraction
+     real(r8) :: cloudfrac_modis(pcols)    ! cloud fraction from modis
+     real(r8) :: cloudfrac_isccp(pcols)    ! cloud fraction from isccp
+     real(r8) :: coszen(pcols)       ! cosine solar zenith angle
      real(r8), pointer, dimension(:) :: nhx_nitrogen_flx ! nitrogen deposition fluxes (kgN/m2/s)
      real(r8), pointer, dimension(:) :: noy_nitrogen_flx ! nitrogen deposition fluxes (kgN/m2/s)
       
@@ -317,7 +319,9 @@ CONTAINS
        cam_out(c)%dstwet3(:)  = 0._r8
        cam_out(c)%dstdry4(:)  = 0._r8
        cam_out(c)%dstwet4(:)  = 0._r8
-       cam_out(c)%cloudfrac(:) = 0._r8
+       cam_out(c)%cloudfrac_modis(:) = 0._r8
+       cam_out(c)%cloudfrac_isccp(:) = 0._r8
+       cam_out(c)%coszen(:) = 0._r8
 
        nullify(cam_out(c)%nhx_nitrogen_flx)
        nullify(cam_out(c)%noy_nitrogen_flx)

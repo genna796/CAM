@@ -291,6 +291,9 @@ contains
           a2x(index_a2x_Faxa_swvdr,ig) = cam_out(c)%sols(i)
           a2x(index_a2x_Faxa_swndf,ig) = cam_out(c)%solld(i)
           a2x(index_a2x_Faxa_swvdf,ig) = cam_out(c)%solsd(i)
+          a2x(index_a2x_Sa_m_cloudfrac,ig) = cam_out(c)%cloudfrac_modis(i)
+          a2x(index_a2x_Sa_i_cloudfrac,ig) = cam_out(c)%cloudfrac_isccp(i)
+          a2x(index_a2x_Sa_coszen,ig) = cam_out(c)%coszen(i) 
 
           ! aerosol deposition fluxes
           a2x(index_a2x_Faxa_bcphidry,ig) = cam_out(c)%bcphidry(i)
@@ -319,9 +322,6 @@ contains
           endif
           if (index_a2x_Faxa_noy > 0 ) then
              a2x(index_a2x_Faxa_noy,ig) = cam_out(c)%noy_nitrogen_flx(i)
-          endif
-          if (index_a2x_Sa_cloudfrac > 0 ) then
-             a2x(index_a2x_Sa_cloudfrac,ig) = cam_out(c)%cloudfrac(i)
           endif
 
           ig=ig+1
@@ -371,7 +371,9 @@ contains
              write(iulog,F01)'export: nstep, ig, Faxa_dstwet1  = ',nstep,ig,a2x(index_a2x_Faxa_dstdry3,ig)
              write(iulog,F01)'export: nstep, ig, Faxa_dstwet1  = ',nstep,ig,a2x(index_a2x_Faxa_dstwet4,ig)
              write(iulog,F01)'export: nstep, ig, Faxa_dstwet1  = ',nstep,ig,a2x(index_a2x_Faxa_dstdry4,ig)
-             write(iulog,F01)'export: nstep, ig, Sa_cloudfrac  = ',nstep,ig,a2x(index_a2x_Sa_cloudfrac,ig)
+             write(iulog,F01)'export: nstep, ig, Sa_m_cloudfrac  = ',nstep,ig,a2x(index_a2x_Sa_m_cloudfrac,ig)
+             write(iulog,F01)'export: nstep, ig, Sa_i_cloudfrac  = ',nstep,ig,a2x(index_a2x_Sa_i_cloudfrac,ig)
+             write(iulog,F01)'export: nstep, ig, Sa_coszen  = ',nstep,ig,a2x(index_a2x_Sa_coszen,ig)
              if (index_a2x_Sa_co2prog /= 0) then
                 write(iulog,F01)'export: nstep, ig, Sa_co2prog = ',nstep,ig,a2x(index_a2x_Sa_co2prog,ig)
              end if
